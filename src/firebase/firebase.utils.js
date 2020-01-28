@@ -32,7 +32,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
    }
 
    return userRef;
-  // console.log(snapShot);
   
 }
 
@@ -54,6 +53,15 @@ export const convertCollectionsSnapshotToMap = (collections) => {
     return accumulator;
   },{})
   
+}
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject)=> {
+    const unsuscribe = auth.onAuthStateChanged(userAuth => {
+      unsuscribe();
+      resolve(userAuth)
+    }, reject)
+  })
 }
 
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
