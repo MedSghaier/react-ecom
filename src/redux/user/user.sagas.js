@@ -8,7 +8,7 @@ import {
     signOutSuccess, 
     signOutFailure, 
     signUpFailure,
-    signUpSuccess
+    signUpSuccess,
 } from './user.actions';
 
 export function* getSnapshotFromUSerAuth(userAuth, additionalData){
@@ -44,7 +44,7 @@ export function* signInWithEmail({payload: {email, password}}){
 }
 
 export function* onEmailSignInstart(){
-    yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail)
+    yield takeLatest(UserActionTypes.EMAIL_SIGN_IN_START, signInWithEmail);
 }
 
 export function* isUserAuthenticated(){
@@ -61,16 +61,16 @@ export function* onCheckUserSession() {
     yield takeLatest(UserActionTypes.CHECK_USER_SESSION, isUserAuthenticated)
 }
 
-export function* signOut(){
+export function* signOut(){ 
     try {
         yield auth.signOut();
-        yield put(signOutSuccess())
+        yield put(signOutSuccess());
     } catch (error) {
-        yield put(signOutFailure(error ))
+        yield put(signOutFailure(error))
     }
 }
 export function* onSignOutStart(){
-    yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut)
+    yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
 }
 
 export function* signUp({payload:{email, password, displayName}}){

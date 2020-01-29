@@ -8,7 +8,7 @@ export function* clearCartOnSingOut(){
 }
 
 export function* onSignOutSuccess(){
-    yield takeLatest(UserActionTypes.SIGN_OUT_SUCCES, clearCartOnSingOut)
+    yield takeLatest(UserActionTypes.SIGN_OUT_SUCCESS, clearCartOnSingOut)
 }
 
 export function* cartSagas(){

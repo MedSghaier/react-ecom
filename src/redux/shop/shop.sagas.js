@@ -5,7 +5,7 @@ import { fetchCollectionsSuccess, fetchCollectionsFailure } from './shop.actions
 
 
 export function* fetchCollectionsAsync(){
-
+    
     try{
 
         const collectionRef = firestore.collection('collections');
@@ -22,19 +22,14 @@ export function* fetchCollectionsAsync(){
         yield put(fetchCollectionsFailure(err.message))
     }
 
-        // collectionRef.get().then(
-        //     snapShot => {
-        //         const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
-        //         dispatch(fetchCollectionsSuccess(collectionsMap));
-        // }).catch( err => dispatch(fetchCollectionsFailure(err.message)))
 }
 
 export function* fetchCollectionsStart(){
-    yield takeLatest(ShopActionTypes.FETCH_COLLECTIONS_START,fetchCollectionsAsync )
+    yield takeLatest(ShopActionTypes.FETCH_COLLECTIONS_START, fetchCollectionsAsync)
 }
 
 export function* shopSagas(){
-    yield all(
+    yield all([
         call(fetchCollectionsStart)
-    )
+    ])
 }

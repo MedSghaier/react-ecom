@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import { createStructuredSelector } from 'reselect'
@@ -15,39 +15,12 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 import { checkUserSession } from './redux/user/user.actions';
 
 
-class App extends React.Component {
-  
-  unsubscribeFromAuth = null;
+const  App = ({ currentUser, checkUserSession }) => {
 
-  componentDidMount(){
-    const { checkUserSession } = this.props;
-    checkUserSession();
-    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-    //   // this.setState({currentUser:user});
-    //   // createUserProfileDocument(user);
-    //   if(userAuth){
-    //     const userRef = await createUserProfileDocument(userAuth);
+  useEffect(()=>{
+    checkUserSession()
+  }, [checkUserSession])
 
-    //      userRef.onSnapshot(snapShot=>{
-    //       // Returns the data from the snapShot -- data on the DB
-          
-    //       setCurrentUser({
-    //           id: snapShot.id,
-    //           ...snapShot.data()
-    //       })
-    //     })
-    //   }else{
-    //       setCurrentUser(userAuth);
-    //     }
-    // });
-  }
-
-  componentWillUnmount(){
-    // Unsubscribe from the auth subscription - no memory leaks
-    this.unsubscribeFromAuth();
-  }
-
-  render(){
     return (
       <div >
         <Header />
@@ -55,17 +28,16 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
-          <Route exact path="/signin" render={()=> this.props.currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage />} />
+          <Route exact path="/signin" render={()=> currentUser ? <Redirect to='/'/> : <SignInAndSignUpPage />} />
         </Switch>
       </div>
     )
-  }
 }
 const mapStateToProps = createStructuredSelector ({
   currentUser: selectCurrentUser,
 })
 const mapDispatchToProps = dispatch => ({
-  checkUserSession: user => dispatch(checkUserSession())
+  checkUserSession: () => dispatch(checkUserSession())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
